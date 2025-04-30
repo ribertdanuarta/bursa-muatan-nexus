@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -84,7 +85,7 @@ const MapComponent = () => {
       // Fetch vehicles with location data
       const { data: vehicles, error: vehiclesError } = await supabase
         .from('vehicles')
-        .select('id, plate_number, vehicle_type, last_known_location')
+        .select('id, license_plate, type, last_known_location') // Changed plate_number to license_plate and vehicle_type to type
         .not('last_known_location', 'is', null)
         .order('created_at', { ascending: false })
         .limit(50);
@@ -117,8 +118,8 @@ const MapComponent = () => {
         return {
           id: vehicle.id,
           type: 'vehicle' as const,
-          title: vehicle.plate_number || 'Kendaraan',
-          description: `Tipe: ${vehicle.vehicle_type || 'Tidak diketahui'}`,
+          title: vehicle.license_plate || 'Kendaraan', // Changed from plate_number
+          description: `Tipe: ${vehicle.type || 'Tidak diketahui'}`, // Changed from vehicle_type
           lat: coords.lat,
           lng: coords.lng,
         };
