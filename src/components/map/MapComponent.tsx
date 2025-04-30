@@ -5,7 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
-import * as L from 'leaflet';
+// Import Leaflet correctly
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -85,7 +86,7 @@ const MapComponent = () => {
       // Fetch vehicles with location data
       const { data: vehicles, error: vehiclesError } = await supabase
         .from('vehicles')
-        .select('id, license_plate, type, last_known_location') 
+        .select('id, license_plate, type, last_known_location')
         .not('last_known_location', 'is', null)
         .order('created_at', { ascending: false })
         .limit(50);
