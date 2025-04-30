@@ -1,18 +1,12 @@
-
 import { useEffect, useState, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { createClient } from '@supabase/supabase-js';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
-// Initialize Supabase client
-const supabaseUrl = 'https://yqcoagvyvohupfkfxuug.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxY29hZ3Z5dm9odXBma2Z4dXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNjEyNjQsImV4cCI6MjAyOTkzNzI2NH0.ya9rurJD1DeM1-e6hfasLwzdQqXrKp-5RxjLgCIKtzY';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/integrations/supabase/client';
 
 type MapMarker = {
   id: string;
