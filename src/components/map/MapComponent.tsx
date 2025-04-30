@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { createClient } from '@supabase/supabase-js';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 // Initialize Supabase client
 const supabaseUrl = 'https://yqcoagvyvohupfkfxuug.supabase.co';
@@ -29,18 +31,12 @@ const MapComponent = () => {
   const [selectedMarker, setSelectedMarker] = useState<MapMarker | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { user, profile } = useAuth();
-  const mapInstanceRef = useRef<any>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
 
   useEffect(() => {
-    // Function to load Leaflet dynamically
-    const loadLeaflet = async () => {
+    // Function to load Leaflet
+    const initializeMap = async () => {
       try {
-        // Dynamically import Leaflet
-        const L = await import('leaflet');
-        
-        // Import CSS
-        await import('leaflet/dist/leaflet.css');
-        
         // Check if map container exists and map isn't already initialized
         if (mapRef.current && !mapInstanceRef.current) {
           // Create map instance
@@ -67,7 +63,7 @@ const MapComponent = () => {
       }
     };
     
-    loadLeaflet();
+    initializeMap();
     
     // Cleanup
     return () => {
@@ -140,12 +136,10 @@ const MapComponent = () => {
 
       // Add markers to map if it's loaded
       if (mapLoaded && mapInstanceRef.current) {
-        const L = await import('leaflet');
-        
         // Clear existing markers
-        mapInstanceRef.current.eachLayer((layer: any) => {
+        mapInstanceRef.current.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
-            mapInstanceRef.current.removeLayer(layer);
+            mapInstanceRef.current?.removeLayer(layer);
           }
         });
         
@@ -163,7 +157,7 @@ const MapComponent = () => {
           });
           
           // Create marker
-          const markerInstance = L.marker([marker.lat, marker.lng], { icon }).addTo(mapInstanceRef.current);
+          const markerInstance = L.marker([marker.lat, marker.lng], { icon }).addTo(mapInstanceRef.current!);
           
           // Add click handler
           markerInstance.on('click', () => {
