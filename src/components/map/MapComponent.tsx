@@ -5,9 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
-// Import Leaflet correctly
+
+// Import Leaflet as a module with proper TypeScript typing
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
 import { supabase } from '@/integrations/supabase/client';
 
 type MapMarker = {
